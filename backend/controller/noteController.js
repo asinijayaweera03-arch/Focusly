@@ -62,6 +62,7 @@ const deleteNote = async (req, res) => {
   res.status(200).json(note)
 }
 
+
 // update a note
 const updateNote = async (req, res) => {
   const { id } = req.params

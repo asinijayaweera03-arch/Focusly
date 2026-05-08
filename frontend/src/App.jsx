@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
+
 //pages & components
 import Home from './pages/Home'
 import Navbar from "./components/Navbar.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function App() {
 
@@ -14,8 +16,10 @@ function App() {
          <div className="page">
             <Routes>
               <Route
-                 path="/"
-                 element={<Home/>}
+                 path="/" element={<Home/>}
+              />
+              <Route
+                 path="/dashboard"element={<Dashboard/>}
               />
             </Routes>
          </div>
