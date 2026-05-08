@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TabNav from '../components/TabNav';
+import TodoTab from '../components/tabs/TodoTab';
+
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -29,7 +31,7 @@ export default function Dashboard() {
       <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="tab-content">
-        {activeTab === 'todo'     && <p>Todo tab coming soon...</p>}
+        {activeTab === 'todo'     && (<TodoTab notes={byType('todo')} onSaved={fetchNotes} />)}
         {activeTab === 'study'    && <p>Study tab coming soon...</p>}
         {activeTab === 'weekly'   && <p>Weekly log coming soon...</p>}
         {activeTab === 'tomorrow' && <p>Tomorrow tab coming soon...</p>}
