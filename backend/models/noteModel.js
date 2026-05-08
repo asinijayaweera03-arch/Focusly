@@ -41,7 +41,15 @@ const noteSchema = new Schema({
   user_id: {
     type: String,
     required: false
-  }
+  },
+  completed:   { 
+    type: Boolean,
+     default: false 
+    },
+  completedAt: { 
+    type: Date, 
+    default: null 
+},
 }, { timestamps: true })
 
 module.exports = mongoose.model('Note', noteSchema)

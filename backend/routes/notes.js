@@ -1,13 +1,11 @@
 const express = require('express')
 const {
-    createNote,
-    getNote,
-    getNotes,
-    deleteNote,
-    updateNote
-    
+  createNote,
+  getNote,
+  getNotes,
+  deleteNote,
+  updateNote
 } = require('../controller/noteController')
-const { updateMany } = require('../models/noteModel')
 
 const router = express.Router()
 
@@ -23,8 +21,7 @@ router.post('/', createNote)
 // DELETE a Note
 router.delete('/:id', deleteNote)
 
-// Update a Note
-router.patch('/:id', updateNote)
-
+// PUT (update) a Note
+router.put('/:id', updateNote)
 
 module.exports = router
