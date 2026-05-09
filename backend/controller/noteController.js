@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 
 // get all notes
 const getNotes = async (req, res) => {
-  const notes = await NoteModel.find({}).sort({ createdAt: -1 })
+  const user_id = req.user._id
+  const notes = await NoteModel.find({ user_id }).sort({ createdAt: -1 })
   res.status(200).json(notes)
 }
 
@@ -15,7 +16,7 @@ const getNote = async (req, res) => {
     return res.status(404).json({ error: 'No such note' })
   }
 
-  const note = await NoteModel.findById(id)
+  const note = await NoteModel.findOne({ _id: id, user_id: req.user._id })
 
   if (!note) {
     return res.status(404).json({ error: 'No such note' })
@@ -38,7 +39,8 @@ const createNote = async (req, res) => {
   }
 
   try {
-    const note = await NoteModel.create(req.body)
+    const user_id = req.user._id
+    const note = await NoteModel.create({ ...req.body, user_id })
     res.status(200).json(note)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -53,7 +55,7 @@ const deleteNote = async (req, res) => {
     return res.status(404).json({ error: 'No such note' })
   }
 
-  const note = await NoteModel.findOneAndDelete({ _id: id })
+  const note = await NoteModel.findOneAndDelete({ _id: id, user_id: req.user._id })
 
   if (!note) {
     return res.status(400).json({ error: 'No such note' })
@@ -61,7 +63,6 @@ const deleteNote = async (req, res) => {
 
   res.status(200).json(note)
 }
-
 
 // update a note
 const updateNote = async (req, res) => {
@@ -72,7 +73,7 @@ const updateNote = async (req, res) => {
   }
 
   const note = await NoteModel.findOneAndUpdate(
-    { _id: id },
+    { _id: id, user_id: req.user._id },
     { ...req.body },
     { new: true }
   )

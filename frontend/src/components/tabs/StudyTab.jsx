@@ -2,9 +2,11 @@ import { useState } from 'react'
 import axios from 'axios'
 import StudyCard from '../cards/StudyCard'
 
-export default function StudyTab({ notes, onSaved }) {
+export default function StudyTab({ notes, onSaved, user }) {
   const [form, setForm] = useState({ title: '', subject: '', duration: '' })
   const [loading, setLoading] = useState(false)
+
+  const authHeader = () => ({ headers: { Authorization: `Bearer ${user.token}` } })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -14,7 +16,7 @@ export default function StudyTab({ notes, onSaved }) {
       await axios.post('/api/notes', {
         ...form,
         noteType: 'study',
-      })
+      }, authHeader())
       setForm({ title: '', subject: '', duration: '' })
       onSaved()
     } catch (err) {
@@ -26,7 +28,7 @@ export default function StudyTab({ notes, onSaved }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`)
+      await axios.delete(`/api/notes/${id}`, authHeader())
       onSaved()
     } catch (err) {
       console.error(err)

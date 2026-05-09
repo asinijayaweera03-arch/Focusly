@@ -1,11 +1,12 @@
-
 import { useState } from 'react';
 import axios from 'axios';
 import TodoCard from '../cards/TodoCard';
 
-export default function TodoTab({ notes, onSaved }) {
+export default function TodoTab({ notes, onSaved, user }) {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const authHeader = () => ({ headers: { Authorization: `Bearer ${user.token}` } });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +17,7 @@ export default function TodoTab({ notes, onSaved }) {
         title,
         noteType: 'todo',
         completed: false,
-      });
+      }, authHeader());
       setTitle('');
       onSaved();
     } catch (err) {
@@ -31,7 +32,7 @@ export default function TodoTab({ notes, onSaved }) {
       await axios.put(`/api/notes/${note._id}`, {
         completed: !note.completed,
         completedAt: !note.completed ? new Date() : null,
-      });
+      }, authHeader());
       onSaved();
     } catch (err) {
       console.error(err);
@@ -40,7 +41,7 @@ export default function TodoTab({ notes, onSaved }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`);
+      await axios.delete(`/api/notes/${id}`, authHeader());
       onSaved();
     } catch (err) {
       console.error(err);
