@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const noteRoutes = require('./routes/notes')
+const moveTomorrowTasks = require('./cron/moveTasks')
 const cors = require('cors')
 
 
@@ -28,6 +29,10 @@ app.use((req, res, next)=>{
 
 // routes
 app.use('/api/notes', noteRoutes)
+
+
+// start cron job
+moveTomorrowTasks()
 
 //connect to db
 mongoose.connect(process.env.MONGO_URI)
