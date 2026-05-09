@@ -1,25 +1,33 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuthContext } from '../hooks/useAuthContext';
 import TabNav from '../components/TabNav';
 import TodoTab from '../components/tabs/TodoTab';
 import StudyTab from '../components/tabs/StudyTab';
-import WeeklyLogTab from '../components/tabs/WeeklyLogTab'
-import TomorrowTab from '../components/tabs/TomorrowTab'
+import WeeklyLogTab from '../components/tabs/WeeklyLogTab';
+import TomorrowTab from '../components/tabs/TomorrowTab';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
   const [notes, setNotes] = useState([]);
+  const { user } = useAuthContext();
 
   const fetchNotes = async () => {
     try {
-      const res = await axios.get('/api/notes');
+      const res = await axios.get('/api/notes', {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
       setNotes(res.data);
     } catch (err) {
       console.error('Failed to fetch notes:', err);
     }
   };
 
-  useEffect(() => { fetchNotes(); }, []);
+  useEffect(() => {
+    if (user) {
+      fetchNotes();
+    }
+  }, [user]);
 
   const byType = (type) => notes.filter(n => n.noteType === type);
 
@@ -27,16 +35,16 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="dashboard-header">
         <h1>Focusly 🎯</h1>
-        <span className="streak">🔥 7 day streak</span>
+        <span className="streak">🔥 Keep going!</span>
       </div>
 
       <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <div className="tab-content">
-        {activeTab === 'todo'     && (<TodoTab notes={byType('todo')} onSaved={fetchNotes} />)}
-        {activeTab === 'study'    && ( <StudyTab notes={byType('study')} onSaved={fetchNotes} />)}
+        {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={fetchNotes} user={user} />)}
+        {activeTab === 'study'    && (<StudyTab    notes={byType('study')}   onSaved={fetchNotes} user={user} />)}
         {activeTab === 'weekly'   && (<WeeklyLogTab notes={notes.filter(n => n.noteType === 'todo' && n.completed)} />)}
-        {activeTab === 'tomorrow' && (<TomorrowTab notes={byType('tomorrow')} onSaved={fetchNotes} />)}
+        {activeTab === 'tomorrow' && (<TomorrowTab  notes={byType('tomorrow')} onSaved={fetchNotes} user={user} />)}
       </div>
     </div>
   );

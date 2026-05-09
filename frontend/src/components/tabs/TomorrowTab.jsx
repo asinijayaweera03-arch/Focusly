@@ -2,9 +2,11 @@ import { useState } from 'react'
 import axios from 'axios'
 import TomorrowCard from '../cards/TomorrowCard'
 
-export default function TomorrowTab({ notes, onSaved }) {
+export default function TomorrowTab({ notes, onSaved, user }) {
   const [form, setForm] = useState({ title: '', priority: 'medium' })
   const [loading, setLoading] = useState(false)
+
+  const authHeader = () => ({ headers: { Authorization: `Bearer ${user.token}` } })
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -14,7 +16,7 @@ export default function TomorrowTab({ notes, onSaved }) {
       await axios.post('/api/notes', {
         ...form,
         noteType: 'tomorrow',
-      })
+      }, authHeader())
       setForm({ title: '', priority: 'medium' })
       onSaved()
     } catch (err) {
@@ -26,7 +28,7 @@ export default function TomorrowTab({ notes, onSaved }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`)
+      await axios.delete(`/api/notes/${id}`, authHeader())
       onSaved()
     } catch (err) {
       console.error(err)

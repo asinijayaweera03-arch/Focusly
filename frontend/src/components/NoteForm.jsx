@@ -1,8 +1,11 @@
 import { useState } from "react"
 import { useNotesContext } from "../hooks/useNotesContext"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 const NoteForm = () => {
   const { dispatch } = useNotesContext()
+  const { user } = useAuthContext()
+
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [subject, setSubject] = useState('')
@@ -12,13 +15,16 @@ const NoteForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (!user) return
+
     const note = { title, content, subject }
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/notes`, {
       method: 'POST',
       body: JSON.stringify(note),
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
       }
     })
     const json = await response.json()

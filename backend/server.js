@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const noteRoutes = require('./routes/notes')
+const userRoutes = require('./routes/user')
 const moveTomorrowTasks = require('./cron/moveTasks')
 const cors = require('cors')
 
@@ -29,6 +30,7 @@ app.use((req, res, next)=>{
 
 // routes
 app.use('/api/notes', noteRoutes)
+app.use('/api/user', userRoutes)
 
 
 // start cron job
