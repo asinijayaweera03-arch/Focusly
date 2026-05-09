@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import TabNav from '../components/TabNav';
 import TodoTab from '../components/tabs/TodoTab';
-
+import StudyTab from '../components/tabs/StudyTab';
+import WeeklyLogTab from '../components/tabs/WeeklyLogTab'
+import TomorrowTab from '../components/tabs/TomorrowTab'
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -32,9 +34,9 @@ export default function Dashboard() {
 
       <div className="tab-content">
         {activeTab === 'todo'     && (<TodoTab notes={byType('todo')} onSaved={fetchNotes} />)}
-        {activeTab === 'study'    && <p>Study tab coming soon...</p>}
-        {activeTab === 'weekly'   && <p>Weekly log coming soon...</p>}
-        {activeTab === 'tomorrow' && <p>Tomorrow tab coming soon...</p>}
+        {activeTab === 'study'    && ( <StudyTab notes={byType('study')} onSaved={fetchNotes} />)}
+        {activeTab === 'weekly'   && (<WeeklyLogTab notes={notes.filter(n => n.noteType === 'todo' && n.completed)} />)}
+        {activeTab === 'tomorrow' && (<TomorrowTab notes={byType('tomorrow')} onSaved={fetchNotes} />)}
       </div>
     </div>
   );
