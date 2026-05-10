@@ -4,7 +4,8 @@ const {
   getNote,
   getNotes,
   deleteNote,
-  updateNote
+  updateNote,
+  logFocusTime
 } = require('../controller/noteController')
 const requireAuth = require('../middleware/requireAuth')
 
@@ -27,5 +28,8 @@ router.delete('/:id', deleteNote)
 
 // PUT (update) a Note
 router.put('/:id', updateNote)
+
+//add the focus log route
+router.patch('/:id/focus', logFocusTime)
 
 module.exports = router
