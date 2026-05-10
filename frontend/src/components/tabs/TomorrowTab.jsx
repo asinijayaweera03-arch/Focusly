@@ -40,6 +40,19 @@ export default function TomorrowTab({ notes, onSaved, user }) {
     return order[a.priority] - order[b.priority]
   })
 
+  const handleMoveTodo = async (id) => {
+  try {
+    await axios.put(`/api/notes/${id}`, {
+      noteType: 'todo',
+      completed: false,
+      completedAt: null,
+    }, authHeader());
+    onSaved();
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   return (
     <div>
       <form onSubmit={handleSubmit} className="note-form">
@@ -78,6 +91,7 @@ export default function TomorrowTab({ notes, onSaved, user }) {
                 key={n._id}
                 note={n}
                 onDelete={() => handleDelete(n._id)}
+                 onMoveTodo={() => handleMoveTodo(n._id)}
               />
             ))}
           </div>
