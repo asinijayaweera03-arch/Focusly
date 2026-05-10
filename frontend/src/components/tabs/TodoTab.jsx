@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 import TodoCard from '../cards/TodoCard';
+import PomodoroModal from '../PomodoroModal';
 
 export default function TodoTab({ notes, onSaved, user }) {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
+  const [timerTask, setTimerTask] = useState(null);
 
   const authHeader = () => ({ headers: { Authorization: `Bearer ${user.token}` } });
 
@@ -79,6 +81,7 @@ export default function TodoTab({ notes, onSaved, user }) {
                 note={n}
                 onToggle={() => handleToggle(n)}
                 onDelete={() => handleDelete(n._id)}
+                onStartTimer={() => setTimerTask(n)}
               />
             ))}
           </div>
@@ -97,10 +100,18 @@ export default function TodoTab({ notes, onSaved, user }) {
                 note={n}
                 onToggle={() => handleToggle(n)}
                 onDelete={() => handleDelete(n._id)}
+                onStartTimer={() => setTimerTask(n)}
               />
             ))}
           </div>
         </>
+      )}
+
+      {timerTask && (
+        <PomodoroModal
+          task={timerTask}
+          onClose={() => setTimerTask(null)}
+        />
       )}
     </div>
   );
