@@ -85,4 +85,16 @@ const updateNote = async (req, res) => {
   res.status(200).json(note)
 }
 
-module.exports = { getNotes, getNote, createNote, deleteNote, updateNote }
+// log focus time for a note
+const logFocusTime = async (req, res) => {
+  const { minutes } = req.body
+  const note = await NoteModel.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { totalFocusedMinutes: minutes } },
+    { new: true }
+  )
+  if (!note) return res.status(404).json({ error: 'No such note' })
+  res.status(200).json(note)
+}
+
+module.exports = { getNotes, getNote, createNote, deleteNote, updateNote, logFocusTime }
