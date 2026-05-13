@@ -1,10 +1,11 @@
-require('dotenv').config()
+require('dotenv').config({ path: __dirname + '/.env' })
 
 const express = require('express')
 const mongoose = require('mongoose')
 const noteRoutes = require('./routes/notes')
 const userRoutes = require('./routes/user')
 const moveTomorrowTasks = require('./cron/moveTasks')
+const Note = require('./models/noteModel')  
 const cors = require('cors')
 
 

@@ -521,3 +521,35 @@ body {
   color: #fff;
   border-color: #7c3aed;
 }
+
+/* Stats Bar (used in Dashboard) */
+.stats-bar {
+  display: flex;
+  align-items: center;
+  background: #faf5ff;
+  border: 1px solid #e9d5ff;
+  border-radius: 14px;
+  padding: 12px 24px;
+  margin-bottom: 20px;
+}
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+.stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #7c3aed;
+}
+.stat-label {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: #e9d5ff;
+}

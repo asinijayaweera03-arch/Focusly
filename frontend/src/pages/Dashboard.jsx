@@ -6,6 +6,7 @@ import TodoTab from '../components/tabs/TodoTab';
 import StudyTab from '../components/tabs/StudyTab';
 import WeeklyLogTab from '../components/tabs/WeeklyLogTab';
 import TomorrowTab from '../components/tabs/TomorrowTab';
+import StatsBar from '../components/StatsBar';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -39,6 +40,8 @@ export default function Dashboard() {
       </div>
 
       <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
+
+       <StatsBar notes={notes} />
 
       <div className="tab-content">
         {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={fetchNotes} user={user} />)}
