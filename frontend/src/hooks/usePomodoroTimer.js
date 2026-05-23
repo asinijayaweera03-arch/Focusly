@@ -32,7 +32,28 @@ export function usePomodoroTimer() {
     setRunning(false);
     setDone(true);
     setSessions(s => Math.min(s + 1, 4));
-  }, []);
+
+    const minutesLogged = mode === 'free'
+    ? Math.floor(elapsed / 60)
+    : Math.floor((MODES[mode] - secondsLeft) / 60);  // how far they got
+
+  if (minutesLogged > 0) {   // don't save if they bailed immediately
+    const token = localStorage.getItem('token');
+    fetch('/api/stats/session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        duration: minutesLogged,
+        subject: 'general',   // swap in a subject prop later
+        label: ''
+      })
+    }).catch(err => console.error('Failed to save session:', err));
+  }
+}, [mode, elapsed, secondsLeft]);
+ 
 
   useEffect(() => {
     if (running) {
@@ -66,5 +87,6 @@ export function usePomodoroTimer() {
     minutesLogged: mode === 'free'
       ? Math.floor(elapsed / 60)
       : Math.floor((totalSeconds - secondsLeft) / 60),
+    finish,
   };
 }

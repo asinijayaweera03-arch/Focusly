@@ -88,6 +88,16 @@ export default function PomodoroModal({ task, onClose }) {
           </svg>
         </div>
 
+        {/* Finish button — only shown in free mode while running or paused */}
+        {timer.mode === 'free' && !timer.done && (
+          <button
+            className="pm-finish-btn"
+            onClick={() => timer.finish()}
+          >
+            ✅ Finish Session
+          </button>
+        )}
+
         {/* Play / Pause */}
         <button
           className="pm-play-btn"
@@ -106,13 +116,17 @@ export default function PomodoroModal({ task, onClose }) {
         </div>
 
         {/* In-app banner */}
-        {banner && (
-          <div className="pm-banner">
-            🎉 Session complete! {timer.minutesLogged} min logged to this task.
-            <button onClick={() => setBanner(false)}>✕</button>
-          </div>
+       {banner && (
+    <div className="pm-banner">
+    🎉 Session complete! {timer.minutesLogged} min logged.
+    <div style={{ display: 'flex', gap: '8px' }}>
+      <button onClick={() => { onClose(); setActiveTab('analytics'); }}>
+        📊 View Stats
+      </button>
+      <button onClick={() => setBanner(false)}>✕</button>
+    </div>
+  </div>
         )}
-
       </div>
     </div>
   );
