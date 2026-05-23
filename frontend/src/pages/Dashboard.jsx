@@ -7,6 +7,7 @@ import StudyTab from '../components/tabs/StudyTab';
 import WeeklyLogTab from '../components/tabs/WeeklyLogTab';
 import TomorrowTab from '../components/tabs/TomorrowTab';
 import StatsBar from '../components/StatsBar';
+import Analytics from '../components/Analytics';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
@@ -48,6 +49,7 @@ export default function Dashboard() {
         {activeTab === 'study'    && (<StudyTab    notes={byType('study')}   onSaved={fetchNotes} user={user} />)}
         {activeTab === 'weekly'   && (<WeeklyLogTab notes={notes.filter(n => n.noteType === 'todo' && n.completed)} />)}
         {activeTab === 'tomorrow' && (<TomorrowTab  notes={byType('tomorrow')} onSaved={fetchNotes} user={user} />)}
+        {activeTab === 'analytics' && <Analytics user={user} />}
       </div>
     </div>
   );
