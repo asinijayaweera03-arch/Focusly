@@ -5,7 +5,8 @@ const mongoose = require('mongoose')
 const noteRoutes = require('./routes/notes')
 const userRoutes = require('./routes/user')
 const moveTomorrowTasks = require('./cron/moveTasks')
-const Note = require('./models/noteModel')  
+const Note = require('./models/noteModel')
+const statsRoutes = require('./routes/stats')  
 const cors = require('cors')
 
 
@@ -32,6 +33,8 @@ app.use((req, res, next)=>{
 // routes
 app.use('/api/notes', noteRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/stats', statsRoutes)
+app.use('/api/stats', require('./routes/stats')) 
 
 
 // start cron job
