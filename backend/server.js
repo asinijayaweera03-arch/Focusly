@@ -34,7 +34,7 @@ app.use((req, res, next)=>{
 app.use('/api/notes', noteRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/stats', statsRoutes)
-app.use('/api/stats', require('./routes/stats')) 
+
 
 
 // start cron job
