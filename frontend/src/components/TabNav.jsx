@@ -4,6 +4,7 @@ export default function TabNav({ activeTab, setActiveTab }) {
     { id: 'study',    label: 'Study',        icon: '📚' },
     { id: 'weekly',   label: 'Weekly Log',   icon: '📆' },
     { id: 'tomorrow', label: "Tomorrow",     icon: '🌅' },
+    { id: 'analytics', label: 'Analytics',  icon: '📊' },
   ];
 
   return (
