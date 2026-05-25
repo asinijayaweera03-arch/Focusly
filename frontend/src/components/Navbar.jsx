@@ -1,10 +1,18 @@
 import { Link } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
 import { useLogout } from '../hooks/useLogout'
+import { useState, useEffect } from 'react'
+ 
 
 const Navbar = () => {
   const { user } = useAuthContext()
   const { logout } = useLogout()
+  const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark')
+
+   useEffect(() => {
+    document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+    localStorage.setItem('theme', dark ? 'dark' : 'light')
+  }, [dark])
 
   const handleLogout = () => {
     logout()
@@ -24,6 +32,13 @@ const Navbar = () => {
                 <button className="btn-nav-outline">Dashboard</button>
               </Link>
               <span className="nav-email">{user.email}</span>
+               <button 
+                className="btn-theme-toggle"
+                onClick={() => setDark(d => !d)}
+                aria-label="Toggle dark mode"
+              >
+                {dark ? '☀️' : '🌙'}
+              </button>
               <button className="btn-logout" onClick={handleLogout} id="logout-btn">
                 Log out
               </button>
