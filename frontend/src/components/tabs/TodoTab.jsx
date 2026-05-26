@@ -79,8 +79,16 @@ export default function TodoTab({ notes, onSaved, user }) {
               <TodoCard
                 key={n._id}
                 note={n}
-                onToggle={() => handleToggle(n)}
-                onDelete={() => handleDelete(n._id)}
+                              onToggle={() => handleToggle(n)}
+                            onDelete={() => {
+                const confirmDelete = window.confirm(
+                  "Are you sure you want to delete this task?"
+                );
+
+                if (confirmDelete) {
+                  handleDelete(n._id);
+                }
+              }}
                 onStartTimer={() => setTimerTask(n)}
               />
             ))}
@@ -99,7 +107,15 @@ export default function TodoTab({ notes, onSaved, user }) {
                 key={n._id}
                 note={n}
                 onToggle={() => handleToggle(n)}
-                onDelete={() => handleDelete(n._id)}
+                onDelete={() => {
+                  const confirmDelete = window.confirm(
+                    "Are you sure you want to delete this task?"
+                  );
+
+                  if (confirmDelete) {
+                    handleDelete(n._id);
+                  }
+                }}
                 onStartTimer={() => setTimerTask(n)}
               />
             ))}
