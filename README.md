@@ -27,6 +27,11 @@ Focusly provides:
 - 🔄 Interactive UI for better user experience  
 - ⚡ Fast and responsive design  
 
+## Coming Soon
+- 📊 Analytics dashboard
+- 🌙 Dark mode
+- 🚀 Deploy on Railway + Vercel
+
 ---
 
 ## 🛠 Tech Stack
