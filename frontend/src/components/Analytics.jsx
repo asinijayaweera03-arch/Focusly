@@ -40,16 +40,16 @@ export default function Analytics({ user }) {
 
   return (
     <div className="analytics">
-      <div className="analytics-summary">
-        <div className="summary-pill">
-          <span className="summary-value">{totalMinutes}</span>
-          <span className="summary-label">focus mins this week</span>
-        </div>
+     <div className="analytics-summary">
+      <div className="summary-pill">
+         <span className="summary-value">{totalMinutes}</span>
+         <span className="summary-label">focus mins this week</span>
+      </div>
         <div className="summary-pill">
           <span className="summary-value">{totalTasks}</span>
           <span className="summary-label">tasks completed</span>
-        </div>
-      </div>
+       </div>
+    </div>
 
       <section className="chart-card">
         <h3>Weekly focus time</h3>
