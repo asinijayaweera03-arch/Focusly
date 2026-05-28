@@ -40,30 +40,20 @@ app.use('/api/stats', statsRoutes)
 // start cron job
 moveTomorrowTasks()
 
-/* catch-up: move any tasks missed while server was off
-const Note = require('./models/noteModel')
 const runCatchUp = async () => {
   const todayAt4am = new Date()
   todayAt4am.setHours(4, 0, 0, 0)
+  
   if (new Date() > todayAt4am) {
-    await Note.updateMany(
+    console.log('🔍 Running catch-up...')
+    const result = await Note.updateMany(
       { noteType: 'tomorrow', createdAt: { $lt: todayAt4am } },
       { $set: { noteType: 'todo', completed: false, completedAt: null } }
     )
-    console.log('✅ Catch-up: moved missed tomorrow tasks')
+    if (result.modifiedCount > 0) {
+      console.log('✅ Catch-up: moved', result.modifiedCount, 'missed tomorrow tasks to todo')
+    }
   }
-}
-*/
-
-const runCatchUp = async () => {
-  console.log('🔍 Running catch-up...')
-  const all = await Note.find({ noteType: 'tomorrow' })
-  console.log('Found tomorrow tasks:', all.length)
-  const result = await Note.updateMany(
-    { noteType: 'tomorrow' },
-    { $set: { noteType: 'todo', completed: false, completedAt: null } }
-  )
-  console.log('Modified:', result.modifiedCount)
 }
 
 
