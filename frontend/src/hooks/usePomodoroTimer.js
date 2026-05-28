@@ -39,7 +39,8 @@ export function usePomodoroTimer() {
 
   if (minutesLogged > 0) {   // don't save if they bailed immediately
     const token = localStorage.getItem('token');
-    fetch('/api/stats/session', {
+    const base = import.meta.env.VITE_API_URL || ''
+      fetch(`${base}/api/stats/session`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
