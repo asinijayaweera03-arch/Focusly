@@ -3,12 +3,15 @@ import { usePomodoroTimer } from '../hooks/usePomodoroTimer';
 import { useNotifications } from '../hooks/useNotifications';
 import { logFocusTime } from '../api/noteApi';  // you'll add this below
 
+import { useAuthContext } from '../hooks/useAuthContext';
+
 const RADIUS = 90;
 const CIRC   = 2 * Math.PI * RADIUS;
 
-export default function PomodoroModal({ task, onClose }) {
+export default function PomodoroModal({ task, onClose, onSaved }) {
   const timer = usePomodoroTimer();
   const { requestPermission, notify } = useNotifications();
+  const { user } = useAuthContext();
   const [banner, setBanner] = useState(false);
 
   // Ask for notification permission when modal opens
@@ -16,11 +19,13 @@ export default function PomodoroModal({ task, onClose }) {
 
   // When timer finishes — ring turns green, show banner, fire bell+OS notif, log to DB
   useEffect(() => {
-    if (!timer.done) return;
+    if (!timer.done || !user) return;
     setBanner(true);
     notify(task.title);
-    logFocusTime(task._id, timer.minutesLogged);
-  }, [timer.done]);
+    logFocusTime(task._id, timer.minutesLogged, user.token).then(() => {
+      if (onSaved) onSaved();
+    });
+  }, [timer.done, user]);
 
   const fmt = (secs) => {
     const m = String(Math.floor(secs / 60)).padStart(2, '0');

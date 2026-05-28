@@ -127,6 +127,7 @@ export default function TodoTab({ notes, onSaved, user }) {
         <PomodoroModal
           task={timerTask}
           onClose={() => setTimerTask(null)}
+          onSaved={onSaved}
         />
       )}
     </div>

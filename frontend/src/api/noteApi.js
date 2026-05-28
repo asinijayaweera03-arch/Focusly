@@ -18,10 +18,13 @@ export const deleteNote = async (id) => {
   await fetch(`${BASE}/${id}`, { method: 'DELETE' });
 };
 
-export const logFocusTime = async (noteId, minutes) => {
+export const logFocusTime = async (noteId, minutes, token) => {
   const res = await fetch(`${BASE}/${noteId}/focus`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
     body: JSON.stringify({ minutes }),
   });
   return res.json();
