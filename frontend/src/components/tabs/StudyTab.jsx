@@ -13,12 +13,32 @@ export default function StudyTab({ notes, onSaved, user }) {
     if (!form.title.trim()) return
     setLoading(true)
     try {
+      const durationHours = parseFloat(form.duration) || 0;
+      const durationMins = Math.floor(durationHours * 60);
+
+      // 1. Create the note
       await axios.post('/api/notes', {
-        ...form,
+        title: form.title,
+        subject: form.subject,
+        duration: durationHours,
         noteType: 'study',
-      }, authHeader())
-      setForm({ title: '', subject: '', duration: '' })
-      onSaved()
+        completed: true,
+        completedAt: new Date(),
+        totalFocusedMinutes: durationMins,
+      }, authHeader());
+
+      // 2. Add to analytics if there is a duration
+      if (durationMins > 0) {
+        const base = import.meta.env.VITE_API_URL || '';
+        await axios.post(`${base}/api/stats/session`, {
+          duration: durationMins,
+          subject: form.subject || 'study',
+          label: form.title
+        }, authHeader());
+      }
+
+      setForm({ title: '', subject: '', duration: '' });
+      onSaved();
     } catch (err) {
       console.error(err)
     } finally {

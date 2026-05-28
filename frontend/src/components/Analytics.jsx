@@ -38,12 +38,19 @@ export default function Analytics({ user }) {
   const totalMinutes = focusData.reduce((sum, d) => sum + d.minutes, 0)
   const totalTasks   = taskData.reduce((sum, d) => sum + d.count, 0)
 
+  const formatTime = (mins) => {
+    if (mins < 60) return `${mins}m`;
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  };
+
   return (
     <div className="analytics">
      <div className="analytics-summary">
       <div className="summary-pill">
-         <span className="summary-value">{totalMinutes}</span>
-         <span className="summary-label">focus mins this week</span>
+         <span className="summary-value">{formatTime(totalMinutes)}</span>
+         <span className="summary-label">focused this week</span>
       </div>
         <div className="summary-pill">
           <span className="summary-value">{totalTasks}</span>
