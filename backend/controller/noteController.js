@@ -72,9 +72,17 @@ const updateNote = async (req, res) => {
     return res.status(404).json({ error: 'No such note' })
   }
 
+  // ✅ Auto-set completedAt when marking complete/incomplete
+  const updateData = { ...req.body }
+  if (req.body.completed === true) {
+    updateData.completedAt = new Date()
+  } else if (req.body.completed === false) {
+    updateData.completedAt = null
+  }
+
   const note = await NoteModel.findOneAndUpdate(
     { _id: id, user_id: req.user._id },
-    { ...req.body },
+    { ...updateData },
     { new: true }
   )
 
