@@ -361,7 +361,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f0effc 0%, #f5f5f0 100%);
+ background: var(--bg);
   padding: 2rem 1rem;
 }
 
@@ -427,11 +427,14 @@ body {
   border-radius: 10px;
   font-size: 14px;
   font-family: 'Poppins', sans-serif;
-  color: #1a1a1a;
-  background: #fafafa;
+  color: var(--text) !important;
+  background: var(--input-bg) !important;
   margin: 0;
   transition: border-color 0.15s, box-shadow 0.15s;
   box-sizing: border-box;
+}
+.auth-input::placeholder {
+  color: var(--text-muted) !important;
 }
 .auth-input:focus {
   outline: none;
@@ -670,4 +673,201 @@ body {
   .analytics { padding: 1rem 0; gap: 1rem; }
   .analytics-summary { flex-direction: column; }
   .summary-value { font-size: 1.5rem; }
+}
+
+/* =====================================================
+   SESSION 6 — MOBILE RESPONSIVE POLISH
+   ===================================================== */
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Header needs relative so the dropdown anchors to it */
+header {
+  position: relative;
+}
+
+/* ---- TAB NAV: horizontal scroll on mobile ---- */
+.tab-nav-wrapper {
+  margin: 0 -1.5rem 1.5rem;   /* bleed to edges */
+  padding: 0 1.5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-nav-wrapper::-webkit-scrollbar { display: none; }
+
+/* Override the existing .tab-nav flex-wrap so tabs scroll instead of wrap */
+.tab-nav {
+  flex-wrap: nowrap !important;
+  width: max-content;
+  padding-bottom: 4px;
+}
+
+/* ---- HAMBURGER BUTTON ---- */
+.hamburger-btn {
+  display: none;   /* hidden on desktop */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+  transform-origin: center;
+}
+
+/* Animates into an X when open */
+.hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---- MOBILE: ≤ 768px ---- */
+@media (max-width: 768px) {
+
+  /* Show hamburger */
+  .hamburger-btn {
+    display: flex;
+  }
+
+  /* Nav dropdown */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--header-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    z-index: 100;
+  }
+
+  .nav-links.nav-open {
+    display: flex;
+  }
+
+  /* Full-width buttons inside mobile nav */
+  .nav-links a,
+  .nav-links a button,
+  .nav-links > button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-email {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  /* Dashboard padding fix */
+  .dashboard {
+    padding: 1rem 0.875rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 20px;
+  }
+
+  /* Cards: single column */
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Note form stacks vertically */
+  .note-form {
+    flex-direction: column;
+  }
+
+  .note-form .form-input,
+  .note-form .btn-primary {
+    width: 100%;
+    min-width: unset;
+  }
+
+  /* Stats bar adjustments */
+  .stats-bar {
+    padding: 10px 12px;
+  }
+
+  .stat-value {
+    font-size: 18px;
+  }
+}
+
+/* ---- POMODORO: full screen on mobile (≤ 480px) ---- */
+@media (max-width: 480px) {
+
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .pomodoro-modal {
+    width: 100%;
+    height: 100dvh;
+    border-radius: 0;
+    padding: 24px 20px;
+    justify-content: center;
+    overflow-y: auto;
+  }
+
+  .pm-ring-wrap svg {
+    width: 190px;
+    height: 190px;
+  }
+
+  .pm-modes {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tab-btn,
+  .btn-primary,
+  .btn-done,
+  .btn-delete,
+  .btn-undo,
+  .btn-move,
+  .pm-play-btn {
+    min-height: 44px;
+  }
+
+  /* LOGIN / SIGNUP: mobile fix (combined into same breakpoint) */
+  .auth-container {
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .auth-card {
+    padding: 1.75rem 1.25rem;
+    border-radius: 12px;
+  }
+
+  .auth-title {
+    font-size: 1.4rem;
+  }
+
+  .auth-btn {
+    font-size: 14px;
+    padding: 11px;
+  }
 }
