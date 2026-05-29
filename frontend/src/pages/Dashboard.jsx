@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   const fetchNotes = async () => {
     try {
-      const res = await axios.get('/api/notes', {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/notes`, {
         headers: { Authorization: `Bearer ${user.token}` }
       });
       setNotes(res.data);
