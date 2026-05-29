@@ -45,7 +45,7 @@ export default function Dashboard() {
        <StatsBar notes={notes} />
 
       <div className="tab-content">
-        {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={fetchNotes} user={user} />)}
+        {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={fetchNotes} user={user} onViewStats={() => setActiveTab('analytics')} />)}
         {activeTab === 'study'    && (<StudyTab    notes={byType('study')}   onSaved={fetchNotes} user={user} />)}
         {activeTab === 'weekly'   && (<WeeklyLogTab notes={notes.filter(n => n.noteType === 'todo' && n.completed)} />)}
         {activeTab === 'tomorrow' && (<TomorrowTab  notes={byType('tomorrow')} onSaved={fetchNotes} user={user} />)}

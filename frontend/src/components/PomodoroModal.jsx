@@ -8,7 +8,7 @@ import { useAuthContext } from '../hooks/useAuthContext';
 const RADIUS = 90;
 const CIRC   = 2 * Math.PI * RADIUS;
 
-export default function PomodoroModal({ task, onClose, onSaved }) {
+export default function PomodoroModal({ task, onClose, onSaved, onViewStats }) {
   const timer = usePomodoroTimer();
   const { requestPermission, notify } = useNotifications();
   const { user } = useAuthContext();
@@ -125,7 +125,7 @@ export default function PomodoroModal({ task, onClose, onSaved }) {
     <div className="pm-banner">
     🎉 Session complete! {timer.minutesLogged} min logged.
     <div style={{ display: 'flex', gap: '8px' }}>
-      <button onClick={() => { onClose(); setActiveTab('analytics'); }}>
+      <button onClick={() => { onClose(); onViewStats?.(); }}>
         📊 View Stats
       </button>
       <button onClick={() => setBanner(false)}>✕</button>

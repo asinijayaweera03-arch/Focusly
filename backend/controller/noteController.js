@@ -41,7 +41,7 @@ const createNote = async (req, res) => {
   try {
     const user_id = req.user._id
     const note = await NoteModel.create({ ...req.body, user_id })
-    res.status(200).json(note)
+    res.status(201).json(note)
   } catch (error) {
     res.status(400).json({ error: error.message })
   }
@@ -58,7 +58,7 @@ const deleteNote = async (req, res) => {
   const note = await NoteModel.findOneAndDelete({ _id: id, user_id: req.user._id })
 
   if (!note) {
-    return res.status(400).json({ error: 'No such note' })
+    return res.status(404).json({ error: 'No such note' })
   }
 
   res.status(200).json(note)
@@ -87,7 +87,7 @@ const updateNote = async (req, res) => {
   )
 
   if (!note) {
-    return res.status(400).json({ error: 'No such note' })
+    return res.status(404).json({ error: 'No such note' })
   }
 
   res.status(200).json(note)
@@ -95,14 +95,22 @@ const updateNote = async (req, res) => {
 
 // log focus time for a note
 const logFocusTime = async (req, res) => {
-  const { minutes } = req.body
-  const note = await NoteModel.findByIdAndUpdate(
-    req.params.id,
-    { $inc: { totalFocusedMinutes: minutes } },
-    { new: true }
-  )
-  if (!note) return res.status(404).json({ error: 'No such note' })
-  res.status(200).json(note)
+  const minutes = Number(req.body.minutes)
+  if (!minutes || minutes <= 0) {
+    return res.status(400).json({ error: 'minutes must be a positive number' })
+  }
+
+  try {
+    const note = await NoteModel.findOneAndUpdate(
+      { _id: req.params.id, user_id: req.user._id },
+      { $inc: { totalFocusedMinutes: minutes } },
+      { new: true }
+    )
+    if (!note) return res.status(404).json({ error: 'No such note' })
+    res.status(200).json(note)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
 }
 
 module.exports = { getNotes, getNote, createNote, deleteNote, updateNote, logFocusTime }

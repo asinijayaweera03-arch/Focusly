@@ -13,7 +13,7 @@ export default function TomorrowTab({ notes, onSaved, user }) {
     if (!form.title.trim()) return
     setLoading(true)
     try {
-      await axios.post('/api/notes', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/notes`, {
         ...form,
         noteType: 'tomorrow',
       }, authHeader())
@@ -28,7 +28,7 @@ export default function TomorrowTab({ notes, onSaved, user }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`, authHeader())
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, authHeader())
       onSaved()
     } catch (err) {
       console.error(err)
@@ -42,7 +42,7 @@ export default function TomorrowTab({ notes, onSaved, user }) {
 
   const handleMoveTodo = async (id) => {
   try {
-    await axios.put(`/api/notes/${id}`, {
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, {
       noteType: 'todo',
       completed: false,
       completedAt: null,

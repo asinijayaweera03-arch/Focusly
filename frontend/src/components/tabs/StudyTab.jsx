@@ -17,7 +17,7 @@ export default function StudyTab({ notes, onSaved, user }) {
       const durationMins = Math.floor(durationHours * 60);
 
       // 1. Create the note
-      await axios.post('/api/notes', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/notes`, {
         title: form.title,
         subject: form.subject,
         duration: durationHours,
@@ -48,7 +48,7 @@ export default function StudyTab({ notes, onSaved, user }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`, authHeader())
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, authHeader())
       onSaved()
     } catch (err) {
       console.error(err)

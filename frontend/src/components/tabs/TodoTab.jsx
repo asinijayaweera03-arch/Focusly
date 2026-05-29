@@ -3,7 +3,7 @@ import axios from 'axios';
 import TodoCard from '../cards/TodoCard';
 import PomodoroModal from '../PomodoroModal';
 
-export default function TodoTab({ notes, onSaved, user }) {
+export default function TodoTab({ notes, onSaved, user, onViewStats }) {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [timerTask, setTimerTask] = useState(null);
@@ -15,7 +15,7 @@ export default function TodoTab({ notes, onSaved, user }) {
     if (!title.trim()) return;
     setLoading(true);
     try {
-      await axios.post('/api/notes', {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/notes`, {
         title,
         noteType: 'todo',
         completed: false,
@@ -31,7 +31,7 @@ export default function TodoTab({ notes, onSaved, user }) {
 
   const handleToggle = async (note) => {
     try {
-      await axios.put(`/api/notes/${note._id}`, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/notes/${note._id}`, {
         completed: !note.completed,
         completedAt: !note.completed ? new Date() : null,
       }, authHeader());
@@ -43,7 +43,7 @@ export default function TodoTab({ notes, onSaved, user }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/notes/${id}`, authHeader());
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`, authHeader());
       onSaved();
     } catch (err) {
       console.error(err);
@@ -128,6 +128,7 @@ export default function TodoTab({ notes, onSaved, user }) {
           task={timerTask}
           onClose={() => setTimerTask(null)}
           onSaved={onSaved}
+          onViewStats={onViewStats}
         />
       )}
     </div>
