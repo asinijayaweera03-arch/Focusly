@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useAuthContext } from '../hooks/useAuthContext';
 import TabNav from '../components/TabNav';
@@ -9,10 +9,33 @@ import TomorrowTab from '../components/tabs/TomorrowTab';
 import StatsBar from '../components/StatsBar';
 import Analytics from '../components/Analytics';
 
+import { useGamification } from '../hooks/useGamification';
+import XPBar from '../components/XPBar';
+import StreakBadge from '../components/StreakBadge';
+import LevelUpToast from '../components/LevelUpToast';
+
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('todo');
   const [notes, setNotes] = useState([]);
   const { user } = useAuthContext();
+  const [levelUpTo, setLevelUpTo] = useState(null);
+
+  const handleLevelUp = useCallback((newLevel) => {
+    setLevelUpTo(newLevel);
+  }, []);
+
+  const {
+    xp,
+    level,
+    streakCurrent,
+    streakLongest,
+    badges,
+    totalTasksDone,
+    totalFocusMins,
+    progress,
+    xpInLevel,
+    refresh: refreshGamification
+  } = useGamification(handleLevelUp);
 
   const fetchNotes = async () => {
     try {
@@ -31,26 +54,45 @@ export default function Dashboard() {
     }
   }, [user]);
 
+  const handleSaved = () => {
+    fetchNotes();
+    refreshGamification();
+  };
+
   const byType = (type) => notes.filter(n => n.noteType === type);
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <h1>Focusly 🎯</h1>
-        <span className="streak">🔥 Keep going!</span>
+        <StreakBadge streakCurrent={streakCurrent} streakLongest={streakLongest} />
       </div>
+
+      <XPBar level={level} xp={xp} progress={progress} xpInLevel={xpInLevel} />
 
       <TabNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
-       <StatsBar notes={notes} />
+      <StatsBar notes={notes} level={level} xpInLevel={xpInLevel} />
 
       <div className="tab-content">
-        {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={fetchNotes} user={user} onViewStats={() => setActiveTab('analytics')} />)}
-        {activeTab === 'study'    && (<StudyTab    notes={byType('study')}   onSaved={fetchNotes} user={user} />)}
+        {activeTab === 'todo'     && (<TodoTab     notes={byType('todo')}    onSaved={handleSaved} user={user} onViewStats={() => setActiveTab('analytics')} />)}
+        {activeTab === 'study'    && (<StudyTab    notes={byType('study')}   onSaved={handleSaved} user={user} />)}
         {activeTab === 'weekly'   && (<WeeklyLogTab notes={notes.filter(n => n.noteType === 'todo' && n.completed)} />)}
-        {activeTab === 'tomorrow' && (<TomorrowTab  notes={byType('tomorrow')} onSaved={fetchNotes} user={user} />)}
-        {activeTab === 'analytics' && <Analytics user={user} />}
+        {activeTab === 'tomorrow' && (<TomorrowTab  notes={byType('tomorrow')} onSaved={handleSaved} user={user} />)}
+        {activeTab === 'analytics' && (
+          <Analytics 
+            user={user} 
+            xp={xp}
+            level={level}
+            badges={badges}
+            streakCurrent={streakCurrent}
+            totalTasksDone={totalTasksDone}
+            totalFocusMins={totalFocusMins}
+          />
+        )}
       </div>
+
+      <LevelUpToast level={levelUpTo} onClose={() => setLevelUpTo(null)} />
     </div>
   );
 }
