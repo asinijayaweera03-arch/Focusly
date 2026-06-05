@@ -14,7 +14,7 @@ export default function TodoCard({ note, onToggle, onDelete, onStartTimer }) {
       {note.totalFocusedMinutes > 0 && (
         <p className="card-meta">⏱ {note.totalFocusedMinutes} min focused</p>
       )}
-      <div className="card-actions">
+      <div className="card-actions" onClick={e => e.stopPropagation()}>
         <button
           className={note.completed ? 'btn-undo' : 'btn-done'}
           onClick={e => { e.stopPropagation(); onToggle(); }}

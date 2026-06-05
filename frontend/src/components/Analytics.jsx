@@ -5,8 +5,17 @@ import {
   XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer
 } from 'recharts'
+import BadgesGrid from './BadgesGrid'
 
-export default function Analytics({ user }) {
+export default function Analytics({ 
+  user,
+  xp = 0,
+  level = 1,
+  badges = [],
+  streakCurrent = 0,
+  totalTasksDone = 0,
+  totalFocusMins = 0
+}) {
   const [focusData, setFocusData] = useState([])
   const [taskData, setTaskData]   = useState([])
   const [loading, setLoading]     = useState(true)
@@ -47,16 +56,20 @@ export default function Analytics({ user }) {
 
   return (
     <div className="analytics">
-     <div className="analytics-summary">
-      <div className="summary-pill">
-         <span className="summary-value">{formatTime(totalMinutes)}</span>
-         <span className="summary-label">focused this week</span>
-      </div>
+      <div className="analytics-summary">
+        <div className="summary-pill">
+          <span className="summary-value">{formatTime(totalMinutes)}</span>
+          <span className="summary-label">focused this week</span>
+        </div>
         <div className="summary-pill">
           <span className="summary-value">{totalTasks}</span>
           <span className="summary-label">tasks completed</span>
-       </div>
-    </div>
+        </div>
+        <div className="summary-pill">
+          <span className="summary-value">Level {level}</span>
+          <span className="summary-label">{xp} Total XP</span>
+        </div>
+      </div>
 
       <section className="chart-card">
         <h3>Weekly focus time</h3>
@@ -95,6 +108,8 @@ export default function Analytics({ user }) {
           </BarChart>
         </ResponsiveContainer>
       </section>
+
+      <BadgesGrid earnedBadges={badges} userStats={{ streakCurrent, totalFocusMins, totalTasksDone, level }} />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-export default function StatsBar({ notes }) {
+export default function StatsBar({ notes, level, xpInLevel }) {
   const totalMins = notes.reduce((acc, n) => acc + (n.totalFocusedMinutes || 0), 0);
   const sessions  = Math.floor(totalMins / 25);
 
@@ -19,6 +19,11 @@ export default function StatsBar({ notes }) {
       <div className="stat-item">
         <span className="stat-value">{sessions}</span>
         <span className="stat-label">sessions</span>
+      </div>
+      <div className="stat-divider" />
+      <div className="stat-item">
+        <span className="stat-value">Lvl {level || 1}</span>
+        <span className="stat-label">{xpInLevel || 0}/100 XP</span>
       </div>
     </div>
   );
