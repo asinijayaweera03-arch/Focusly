@@ -13,7 +13,15 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  xp:              { type: Number, default: 0 },
+  level:           { type: Number, default: 1 },
+  streakCurrent:   { type: Number, default: 0 },
+  streakLongest:   { type: Number, default: 0 },
+  lastActiveDate:  { type: String, default: '' },   // "YYYY-MM-DD"
+  badges:          [{ type: String }],               // e.g. ['streak_3', 'focus_500']
+  totalTasksDone:  { type: Number, default: 0 },
+  totalFocusMins:  { type: Number, default: 0 },
 }, { timestamps: true })
 
 // static signup method

@@ -72,6 +72,11 @@ const updateNote = async (req, res) => {
     return res.status(404).json({ error: 'No such note' })
   }
 
+  const existingNote = await NoteModel.findOne({ _id: id, user_id: req.user._id })
+  if (!existingNote) {
+    return res.status(404).json({ error: 'No such note' })
+  }
+
   // ✅ Auto-set completedAt when marking complete/incomplete
   const updateData = { ...req.body }
   if (req.body.completed === true) {
@@ -86,8 +91,18 @@ const updateNote = async (req, res) => {
     { new: true }
   )
 
-  if (!note) {
-    return res.status(404).json({ error: 'No such note' })
+  // Award XP if completed was false and is now true
+  if (existingNote.completed !== true && req.body.completed === true) {
+    try {
+      const User = require('../models/userModel')
+      const gamificationService = require('../services/gamificationService')
+      const user = await User.findById(req.user._id)
+      if (user) {
+        await gamificationService.processTaskComplete(user)
+      }
+    } catch (gErr) {
+      console.error('Error awarding task XP:', gErr)
+    }
   }
 
   res.status(200).json(note)
@@ -107,6 +122,19 @@ const logFocusTime = async (req, res) => {
       { new: true }
     )
     if (!note) return res.status(404).json({ error: 'No such note' })
+
+    // Award XP for completing a Pomodoro session
+    try {
+      const User = require('../models/userModel')
+      const gamificationService = require('../services/gamificationService')
+      const user = await User.findById(req.user._id)
+      if (user) {
+        await gamificationService.processPomodoroComplete(user, minutes)
+      }
+    } catch (gErr) {
+      console.error('Error awarding Pomodoro XP:', gErr)
+    }
+
     res.status(200).json(note)
   } catch (error) {
     res.status(400).json({ error: error.message })
