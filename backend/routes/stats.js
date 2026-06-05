@@ -91,6 +91,15 @@ router.post('/session', requireAuth, async (req, res) => {
       subject: subject || 'general',
       label: label || ''
     })
+    
+    // Award XP for logging a study session
+    const User = require('../models/userModel')
+    const gamificationService = require('../services/gamificationService')
+    const user = await User.findById(req.user._id)
+    if (user) {
+      await gamificationService.processStudyLog(user, duration || 25)
+    }
+
     res.status(201).json(session)
   } catch (err) {
     res.status(400).json({ error: err.message })
