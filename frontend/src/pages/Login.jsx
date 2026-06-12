@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLogin } from '../hooks/useLogin'
+import { GoogleLogin } from '@react-oauth/google'
+import { useGoogleAuth } from '../hooks/useGoogleAuth'
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const { login, isLoading, error } = useLogin()
+  const { googleLogin, isLoading: googleIsLoading, error: googleError } = useGoogleAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -20,6 +23,18 @@ const Login = () => {
           <h1 className="auth-title">Focusly</h1>
           <p className="auth-subtitle">Welcome back! Sign in to continue.</p>
         </div>
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1.5rem' }}>
+          <GoogleLogin
+            onSuccess={credentialResponse => {
+              googleLogin(credentialResponse.credential)
+            }}
+            onError={() => {
+              console.error('Login Failed')
+            }}
+          />
+        </div>
+        <div style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#888', fontSize: '14px' }}>OR</div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">
@@ -49,14 +64,15 @@ const Login = () => {
           </div>
 
           {error && <div className="auth-error">{error}</div>}
+          {googleError && <div className="auth-error">{googleError}</div>}
 
           <button
             id="login-submit"
             type="submit"
             className="auth-btn"
-            disabled={isLoading}
+            disabled={isLoading || googleIsLoading}
           >
-            {isLoading ? 'Signing in…' : 'Sign In'}
+            {isLoading || googleIsLoading ? 'Signing in…' : 'Sign In'}
           </button>
         </form>
 
