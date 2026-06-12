@@ -23,13 +23,14 @@ Focusly provides:
 
 ## ✨ Features
 - 📝 Task creation and management  
-- 📊 Organized dashboard for tracking tasks  
-- 🔄 Interactive UI for better user experience  
-- ⚡ Fast and responsive design  
+- ⏱️ Pomodoro sessions and focus timers
+- 🎮 Gamification (XP, levels, and badges for productivity streaks)
+- 🔐 Secure Google Authentication & traditional Email/Password login
+- 📊 Analytics dashboard for tracking tasks and focus time
+- 🌙 Dark mode & Light mode themes
+- 🔄 Automated task migration (move unfinished tasks to the next day)
 
 ## Coming Soon
-- 📊 Analytics dashboard
-- 🌙 Dark mode
 - 🚀 Deploy on Railway + Vercel
 
 ---
