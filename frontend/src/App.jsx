@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import StudyAssistant from "./components/StudyAssistant";
 
 function App() {
   const { user } = useAuthContext()
@@ -36,6 +37,8 @@ function App() {
           </Routes>
         </div>
       </BrowserRouter>
+      
+
     </div>
   );
 }
