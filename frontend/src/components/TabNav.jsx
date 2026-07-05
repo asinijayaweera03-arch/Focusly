@@ -5,6 +5,7 @@ export default function TabNav({ activeTab, setActiveTab }) {
     { id: 'weekly',    label: 'Weekly Log', icon: '📆' },
     { id: 'tomorrow',  label: 'Tomorrow',   icon: '🌅' },
     { id: 'analytics', label: 'Analytics',  icon: '📊' },
+    { id: 'aiAssistant', label: 'AI Assistant', icon: '🤖' },
   ];
 
   return (
