@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const API_URL = "http://localhost:4000/api/ai/chat";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/ai/chat`;
 
 function StudyAssistant() {
   const [messages, setMessages] = useState([]);
