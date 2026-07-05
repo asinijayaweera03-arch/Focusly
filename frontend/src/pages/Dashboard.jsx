@@ -8,6 +8,7 @@ import WeeklyLogTab from '../components/tabs/WeeklyLogTab';
 import TomorrowTab from '../components/tabs/TomorrowTab';
 import StatsBar from '../components/StatsBar';
 import Analytics from '../components/Analytics';
+import StudyAssistant from '../components/StudyAssistant';
 
 import { useGamification } from '../hooks/useGamification';
 import XPBar from '../components/XPBar';
@@ -90,6 +91,7 @@ export default function Dashboard() {
             totalFocusMins={totalFocusMins}
           />
         )}
+        {activeTab === 'aiAssistant' && (<StudyAssistant />)}
       </div>
 
       <LevelUpToast level={levelUpTo} onClose={() => setLevelUpTo(null)} />

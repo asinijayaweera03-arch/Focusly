@@ -8,6 +8,8 @@ const moveTomorrowTasks = require('./cron/moveTasks')
 const Note = require('./models/noteModel')
 const statsRoutes = require('./routes/stats')  
 const cors = require('cors')
+const aiTestRoutes = require('./routes/aiTest');
+const aiChatRoutes = require('./routes/aiChat');
 
 
 //express app
@@ -35,7 +37,8 @@ app.use('/api/notes', noteRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/gamification', require('./routes/gamification'))
-
+app.use('/api/ai', aiTestRoutes);
+app.use('/api/ai', aiChatRoutes)
 
 
 
